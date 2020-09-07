@@ -31,10 +31,10 @@ pipeline {
 	}
 
 	post {
-    failure {
+    always {
       slackSend (
       	color: COLOR_MAP[currentBuild.currentResult],
-        channel: '#general',
+        channel: '#aws-alerts-01',
         message: "*`${currentBuild.currentResult}`*: *${env.JOB_NAME}*, \nRun in ${currentBuild.durationString} - <${env.BUILD_URL}|Go to this job>")
     }
   }
