@@ -20,7 +20,7 @@ pipeline {
 				sh """
           ansible-inventory -i lab_example/hosts --graph
           ${ANSIBLE}  -i lab_example/hosts host_name\
-	    			-e ansible_ssh_user=ubuntu \
+	    			-e ansible_ssh_user=vagrant \
 						-e ansible_ssh_private_key_file=~/.ssh/remote.pem \
 						--become  \
 						-m shell \
