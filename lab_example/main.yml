@@ -1,0 +1,55 @@
+---
+- hosts: wireguard
+  vars:
+    hostname: "nginx"
+  gather_facts: yes
+  become: yes
+  pre_tasks:
+    - name: 'install python'
+      raw: sudo apt-get update && apt-get install python3 -y
+      tags: ['never']
+  tasks:
+  - name: Ping check
+    ping:
+    tags: ['ping','never']
+  - name: Check user & current dir
+    shell: pwd && whoami 
+    become_user: vagrant
+    tags: ['pwd']
+  - name: install httpd (RED HAT)
+    yum:
+      name: httpd
+    when: 'ansible_distribution == "Centos"'
+  - name: install apache (Debian)
+    apt:
+      name: apache2 
+    when: 'ansible_distribution == "Ubuntu"'
+  - name: Create new dir
+    file:
+      path: "{{item}}"
+      state: touch
+      owner: ubuntu
+      group: ubuntu
+      mode: '0777'
+    with_items:
+      - /home/vagrant/day01
+      - /home/vagrant/day02
+      - /home/vagrant/day03
+    ignore_errors: true
+  - name: Shell module
+    shell: "{{ item}}"
+    with_items:
+      - pwd
+      - whoami
+      - echo shell > /home/vagrant/day02
+    ignore_errors: true
+  - name: Shell example
+    shell: |
+      echo abc
+      pwd
+    ignore_errors: true
+  - name: demo module command
+    command: echo abc > /home/vagrant/day01
+    ignore_errors: true
+    notify: restart nginx
+
