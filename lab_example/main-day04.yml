@@ -1,0 +1,10 @@
+---
+- hosts: "{{hostname}}"
+  vars:
+    hostname: "nginx"
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: external.nginx-roles
+      vars:
+        ansible_python_interpreter: "/usr/bin/python3"
