@@ -1,0 +1,48 @@
+  - name: Install a list of packages
+    yum:
+       name:
+         - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+       state: present
+  - name: Enable repos
+    command: yum-config-manager --enable remi-php71       
+  - name: Install a list of packages 2nd
+    yum:
+       name:
+         - php 
+         - php-mysqlnd 
+         - php-fpm
+  - name: Remove file (delete file)
+    file:
+     path: /etc/php-fpm.d/www.conf
+     state: absent
+  - name: Copy file with owner and permissions
+    copy:
+      src: "{{ sourceConfig }}"
+      dest: /etc/php-fpm.d
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Create a directory hello if it does not exist
+    file:
+     path: /usr/share/nginx/html/hello
+     state: directory
+     mode: '0755'
+  - name: Create a directory info if it does not exist
+    file:
+     path: /usr/share/nginx/html/info
+     state: directory
+     mode: '0755'
+  - name: Copy file with owner and permissions
+    copy:
+      src: "{{ sourceHello }}"
+      dest: /usr/share/nginx/html/hello
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy file with owner and permissions
+    copy:
+      src: "{{ sourceInfo }}"
+      dest: /usr/share/nginx/html/info
+      owner: root
+      group: root
+      mode: '0644'

@@ -1,0 +1,51 @@
+  - name: upgrade all packages
+    yum:
+     name: '*'
+     state: latest
+  - name: Install a list of packages
+    yum:
+       name:
+         - nano
+         - epel-release
+         - yum-utils
+         - wget
+       state: present
+  - name: Disable SELinux
+    selinux:
+       state: disabled
+  - name: Install a list of packages 2nd
+    yum:
+       name:
+         - nginx
+  - name: Start nginx
+    service:
+     name: nginx
+     state: started
+     enabled: yes
+  - name: allow http
+    firewalld:
+      service: http
+      permanent: true
+      state: enabled
+  - name: Restart firewalld
+    service:
+     name: firewalld
+     state: restarted
+  - name: Copy file with owner and permissions
+    copy:
+      src: "{{ Helloconf }}"
+      dest: /etc/nginx/conf.d
+      owner: root
+      group: root
+      mode: '0600'
+  - name: Copy file with owner and permissions
+    copy:
+      src: "{{ Infoconf }}"
+      dest: /etc/nginx/conf.d
+      owner: root
+      group: root
+      mode: '0600'
+  - name: Restart nginx
+    service:
+     name: nginx
+     state: restarted

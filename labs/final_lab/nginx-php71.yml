@@ -1,0 +1,11 @@
+- hosts: server
+  vars:
+    sourceConfig : www.conf
+    sourceHello : hello/index.php
+    sourceInfo : info/index.php
+    Infoconf :  info.test.local.conf
+    Helloconf : hello.test.local.conf
+  remote_user: root
+  roles:
+      - nginx
+      - php71

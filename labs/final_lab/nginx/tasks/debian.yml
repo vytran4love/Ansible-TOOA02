@@ -1,0 +1,22 @@
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Install the package
+  apt:
+    name: 
+      - nginx
+      - nano
+    state: present
+
+- name: Start service snmp, if not started
+  service:
+     name: nginx
+     state: started
+     enabled: yes
+- name: Allow http
+  ufw:
+    rule: allow
+    name: http
+    delete: yes
