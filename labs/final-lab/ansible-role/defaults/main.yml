@@ -1,0 +1,7 @@
+---
+# defaults file for ansible-role
+
+mysql_root_password: "mysql_root_password"
+http_host: "_"
+http_conf: "example.com"
+http_port: "80"

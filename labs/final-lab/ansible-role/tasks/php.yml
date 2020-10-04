@@ -1,0 +1,37 @@
+#
+- name: php - add repository
+  apt_repository:
+    repo: "ppa:ondrej/php"
+    state: "present"
+    update_cache: yes
+
+# xdebug installation described in xdebug.yml
+- name: php - install base packages
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - "php7.1-common"
+    - "php7.1-cli"
+    - "php7.1-fpm"
+    - "php7.1-pgsql"
+    - "php7.1-mysql"
+    - "php7.1-gd"
+    - "php7.1-bz2"
+    - "php7.1-zip"
+    - "php7.1-json"
+    - "php7.1-xml"
+    - "php7.1-curl"
+    - "php7.1-intl"
+    - "php7.1-mbstring"
+    - "php7.1-mcrypt"
+    - "php7.1-bcmath"
+    - "php7.1-soap"
+
+- name: php - ensure pid directory exists
+  file:
+    path: "/run/php"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: 0755

@@ -1,0 +1,33 @@
+---
+# tasks file for dev
+
+- template: src=index.nginx-debian.html dest=/var/www/html/index.nginx-debian.html
+
+- name: Install LEMP Packages
+  apt: name={{ item }}
+  loop: [ 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql' ]
+
+# Nginx Configuration
+- name: Sets Nginx conf file
+  template:
+   src: "files/nginx.conf.j2"
+   dest: "/etc/nginx/sites-available/{{ http_conf }}"
+
+- name: Enables new site
+  file:
+   src: "/etc/nginx/sites-available/{{ http_conf }}"
+   dest: "/etc/nginx/sites-enabled/{{ http_conf }}"
+   state: link
+  notify: Reload Nginx
+    
+- name: Removes "default" site
+  file:
+   path: "/etc/nginx/sites-available/default"
+   state: absent
+  notify: Restart Nginx
+
+# Sets Up PHP Info Page
+- name: Sets Up PHP Info Page
+  template:
+   src: "files/info.php.j2"
+   dest: "/var/www/html/info.php"

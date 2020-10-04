@@ -1,0 +1,17 @@
+---
+# handlers file for ansible-role
+- name: start nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Reload Nginx
+  service:
+   name: nginx
+   state: reloaded
+
+- name: Restart Nginx
+  service:
+   name: nginx
+   state: restarted

@@ -1,0 +1,5 @@
+---
+- hosts: servers02
+  remote_user: root
+  roles:
+    - /root/ansible-role
